@@ -2,6 +2,9 @@ require 'rspec'
 require 'dealer'
 
 describe Dealer do
+    let(:aDeck) {Deck.new()}
+    let(:aGame) { double("aGame") }
+    subject(:aDealer) {Dealer.new(aDeck, aGame)}
 
     describe "#play_round" do
         it "deals each player 5 cards"
@@ -14,10 +17,18 @@ describe Dealer do
     end
 
     describe "#deal" do
+        let(:aPlayer) { double("aPlayer") }
         it "calls the given player's #receive_cards method" do
+            expect(aPlayer).to receive(:receive_cards)
+
+            aDealer.deal(aPlayer, 5)
         end
 
-        it "calls the deck's deal_n method" do
+        it "calls the deck's deal method" do
+            allow(aPlayer).to receive(:receive_cards)
+            expect(aDeck).to receive(:deal).with(5)
+
+            aDealer.deal(aPlayer, 5)
         end
     end
 
@@ -28,7 +39,10 @@ describe Dealer do
     end
 
     describe "#discard_cards" do
-        it "adds the given cards to the discard pile"
+        let(:oneCard) {double("oneCard")}
+        it "adds the given cards to the discard pile" do
+            expect {aDealer.discard_cards([oneCard])}.to change {aDealer.discards.length}.from(0).to(1)
+        end
     end
 
     describe "#award_winner" do

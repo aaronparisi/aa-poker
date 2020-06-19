@@ -1,6 +1,8 @@
 require 'deck'
 
 class Dealer
+
+    attr_reader :discards
     # No test here since i-vars are not exposed via attr_*'s
     def initialize(deck, game)
         @deck, @game = deck, game
@@ -17,7 +19,7 @@ class Dealer
     # 2 - expect(player).to receive(:recieve_cards) with cards
     # ( Test those methods individual in their respective classes )
     def deal(player, n)
-        cards = @deck.deal_n(n)
+        cards = @deck.deal(n)
         player.receive_cards(cards)
     end
 
@@ -29,8 +31,8 @@ class Dealer
         
     end
 
-    def discard_cards
-        
+    def discard_cards(cards)
+        @discards.concat(cards)
     end
 
     def award_winner
