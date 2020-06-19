@@ -39,11 +39,17 @@ describe Deck do
     end
 
     describe "#deal" do
-        it "returns `n` cards"
-        it "removes `n` cards from the deck"
+        it "returns `n` cards" do
+            expect(aDeck.deal(5).length).to eq(5)
+        end
+        it "removes `n` cards from the deck" do
+            expect {aDeck.deal(5)}.to change {aDeck.size}.from(52).to(47)
+        end
     end
 
     describe "#empty" do
-        it "empties the deck"
+        it "empties the deck" do
+            expect {aDeck.empty}.to change {aDeck.size}.from(52).to(0)
+        end
     end
 end

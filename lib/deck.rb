@@ -40,7 +40,7 @@ class Deck
     # But yeah, check that you return an array of `n` cards, and potentially that
     # the deck has `n` fewer cards. Also, what happens when `n` > `@cards.length`?
     # Also, I think deal(n) is better than deal_n(n)
-    def deal_n(n)
+    def deal(n)
         ret = []
         n.times do
             ret << @cards.shift
@@ -50,7 +50,7 @@ class Deck
     end
 
     # Please change to justt `empty` lol. Also, easy test
-    def empty_it
+    def empty
         @cards = []
     end
 
