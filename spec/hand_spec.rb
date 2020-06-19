@@ -24,7 +24,7 @@ describe Hand do
     end
     
     describe '#remove' do
-        before(:each) do { subject.add(card) }
+        before(:each) { subject.add(card) }
         it 'removes a card from the hand' do
             subject.remove(card)
             expect(subject.cards).to be_empty
@@ -38,11 +38,11 @@ describe Hand do
     describe '#include' do
         it 'returns true if the deck includes the card' do
             subject.add(card)
-            expect(subject).to inlcude(card)
+            expect(subject).to include(card)
         end
 
         it 'returns false if the deck doesn\'t include the card' do
-            expect(subject).to.not inlcude(card)
+            expect(subject).to_not include(card)
         end
     end
 end
