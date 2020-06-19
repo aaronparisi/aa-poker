@@ -5,7 +5,8 @@ class Deck
     attr_reader :cards
 
     def initialize()
-        @cards
+        @cards = []
+        fill_deck
     end
 
     # Definitely test, maybe thow in corner cases ... what if pos > cards.length?
