@@ -2,7 +2,7 @@ require 'deck'
 
 class Dealer
 
-    attr_reader :discards
+    attr_reader :discards, :deck
     # No test here since i-vars are not exposed via attr_*'s
     def initialize(game)
         @game = game
@@ -21,7 +21,7 @@ class Dealer
     # ( Test those methods individual in their respective classes )
     def deal(player, n)
         cards = @deck.deal(n)
-        player.receive_cards(cards)
+        player.receive(cards)
     end
 
     def request_actions

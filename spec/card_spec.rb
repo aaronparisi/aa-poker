@@ -14,9 +14,31 @@ describe "Card" do
     end
 
     describe "#==" do
-        context "when the given value and suit match the card's" do
+        let(:aMatch) {Card.new("5", "Clubs")}
+        let(:another) {Card.new("6", "Clubs")}
+        context "when the given card matches in value and suit" do
             it "returns true" do
-                expect(aCard == ["5", "Clubs"]).to be true
+                expect(aCard == aMatch).to be true
+            end
+        end
+
+        context "else" do
+            it "returns false" do
+                expect(aCard == another).to be false
+            end
+        end
+    end
+
+    describe "#by_string" do
+        context "when the given value and suit match the card\'s" do
+            it "returns true" do
+                expect(aCard.by_string("5 Clubs")).to be true
+            end
+        end
+
+        context "else" do
+            it "returns false" do
+                expect(aCard.by_string("6 Clubs")).to be false
             end
         end
     end

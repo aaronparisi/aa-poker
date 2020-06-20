@@ -8,8 +8,12 @@ class Card
         @suit = suit
     end
 
-    def ==(info)
-        v, s = info
-        value == v && suit == s
+    def ==(c)
+        @value == c.value && @suit == c.suit
+    end
+
+    def by_string(str)
+        v, s = str.split(" ")
+        @value == v && @suit == s
     end
 end

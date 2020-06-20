@@ -7,21 +7,21 @@ class Player
     def initialize(name, funds, game)
         @name, @funds, @game = name, funds, game
         @pot = 0
-        @hand = []
+        @hand = Hand.new
         @round_bet = 0
     end
 
-    def receive_cards(cards)
-        cards.each {|c| @hand << c}
+    def receive(cards)
+        cards.each {|c| @hand.add(c)}
     end
 
     def show_hand
-        hand
+        hand.cards
     end
 
     def discard(cards)
         cards.each do |c|
-            @hand.delete(c)
+            @hand.remove(c)
         end
         game.dealer.discard(cards)
     end
@@ -33,8 +33,7 @@ class Player
     # private??
 
     def fold
-        @game.dealer.discard(hand)
-        @hand = []
+        @game.dealer.discard(@hand.empty)
         @round_bet = 0
     end
 

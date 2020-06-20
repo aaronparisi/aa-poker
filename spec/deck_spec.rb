@@ -4,6 +4,7 @@ require 'deck'
 describe Deck do
     subject(:aDeck) {Deck.new}
     let(:spades) { aDeck.cards.map(&:suit).filter{|s| s=="Spades"} }
+    let(:ace_of_spades) {Card.new("Ace", "Spades")}
     describe "#initialize" do
         it "should create a full deck of cards" do
             expect(aDeck.size).to eq(52)
@@ -11,7 +12,10 @@ describe Deck do
         end
     end
     describe "#[]" do
-        it "retreives the card at the passed in index"
+        it "retreives the card object corresponding to the string" do
+            expect(aDeck["Ace Spades"]).to be_a(Card)
+            #expect(aDeck["Ace Spades"]).to eq(["Ace Spade"])
+        end
         it "handles edge cases appropriately?"
     end
 
@@ -27,10 +31,10 @@ describe Deck do
 
     describe "#include?" do
         it "returns true if the card is in the deck" do
-            expect(aDeck.include?("Ace", "Spades")).to be true
+            expect(aDeck.include?("Ace Spades")).to be true
         end
         it "returns false if the card is not in the deck" do
-            expect(aDeck.include?("Joker", "None")).to be false
+            expect(aDeck.include?("Joker None")).to be false
         end
     end
 

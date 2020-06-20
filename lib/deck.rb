@@ -10,8 +10,8 @@ class Deck
     end
 
     # Definitely test, maybe thow in corner cases ... what if pos > cards.length?
-    def [](pos)
-        cards[pos]
+    def [](card_str)
+        cards.each {|c| return c if c.by_string(card_str)}
     end
 
     # Same as above
@@ -27,8 +27,8 @@ class Deck
     # Two tests, one for true, one for false
     # (As an aside, a more production-grade application might check the validity
     # of `val` and `suit`, i.e. 15 of spears ain't valid)
-    def include?(val, suit)
-        cards.any? {|c| c.value == val && c.suit == suit}
+    def include?(card_str)
+        cards.any? {|c| c.by_string(card_str)}
     end
 
     # Yep, expect(deck.shuffle.cards).to.not eq(deck.cards)
@@ -41,12 +41,7 @@ class Deck
     # the deck has `n` fewer cards. Also, what happens when `n` > `@cards.length`?
     # Also, I think deal(n) is better than deal_n(n)
     def deal(n)
-        ret = []
-        n.times do
-            ret << @cards.shift
-        end
-
-        ret
+        @cards.shift(n)
     end
 
     # Please change to justt `empty` lol. Also, easy test
