@@ -12,4 +12,12 @@ describe "Card" do
             expect(aCard.suit).to eq("Clubs")
         end
     end
+
+    describe "#==" do
+        context "when the given value and suit match the card's" do
+            it "returns true" do
+                expect(aCard == ["5", "Clubs"]).to be true
+            end
+        end
+    end
 end

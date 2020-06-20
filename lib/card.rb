@@ -7,4 +7,9 @@ class Card
         @value = value
         @suit = suit
     end
+
+    def ==(info)
+        v, s = info
+        value == v && suit == s
+    end
 end
