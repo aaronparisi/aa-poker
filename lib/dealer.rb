@@ -4,8 +4,9 @@ class Dealer
 
     attr_reader :discards
     # No test here since i-vars are not exposed via attr_*'s
-    def initialize(deck, game)
-        @deck, @game = deck, game
+    def initialize(game)
+        @game = game
+        @deck = Deck.new
         @discards = []
         @first_deal_pos = 0
     end
@@ -31,7 +32,7 @@ class Dealer
         
     end
 
-    def discard_cards(cards)
+    def discard(cards)
         @discards.concat(cards)
     end
 

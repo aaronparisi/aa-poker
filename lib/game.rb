@@ -1,11 +1,24 @@
-# require
-# require
+require 'dealer'
 
 class Game
-    def initialize
-        @players
-        @dealer
-        @pot
+
+    attr_reader :players, :dealer
+
+    attr_accessor :pot, :bet
+
+    def initialize()
+        @players = []
+        @dealer = Dealer.new(self)
+        @pot = 0
+        @bet = 0
+    end
+
+    def raise(amt)
+        @bet += amt
+    end
+
+    def see
+        @pot += bet
     end
 
     # This method likely delegates to other objects to determine if game is over

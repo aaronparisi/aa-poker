@@ -41,7 +41,7 @@ describe Dealer do
     describe "#discard_cards" do
         let(:oneCard) {double("oneCard")}
         it "adds the given cards to the discard pile" do
-            expect {aDealer.discard_cards([oneCard])}.to change {aDealer.discards.length}.from(0).to(1)
+            expect {aDealer.discard([oneCard])}.to change {aDealer.discards.length}.from(0).to(1)
         end
     end
 
