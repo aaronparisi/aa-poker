@@ -16,4 +16,19 @@ class Card
         v, s = str.split(" ")
         @value == v && @suit == s
     end
+
+    def point_val
+        case value
+        when "Jack"
+            return 11
+        when "Queen"
+            return 12
+        when "King"
+            return 13
+        when "Ace"
+            return 1
+        else
+            return value.to_i
+        end
+    end
 end
