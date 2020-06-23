@@ -74,22 +74,22 @@ class Hand
     def yes_pairs(groups, high_card_val)
         if ! groups[4].empty?
             # four of a kind
-            return 400 + quads.first
+            return 400 + groups[4][0][0].point_val
         elsif ! groups[3].empty?
             if ! groups[2].empty?
                 # we have a trip and a pair => full house
-                return 386 + groups[3].first
+                return 386 + groups[3][0][0].point_val
             else
                 # we have 3 of a kind, no pairs
-                return 316 + (groups[3].first * 2) + high_card_val
+                return 316 + (groups[3][0][0].point_val * 2) + high_card_val
             end
         else
             if groups[2].length == 1
                 # one pair
-                return 190 + groups[2].first + high_card_val
+                return 190 + groups[2][0][0].point_val + high_card_val
             else
                 # 2 pairs
-                return 232 + (groups[2].last * 3) + (groups[2].first * 2) + high_card_val
+                return 232 + (groups[2][-1][0].point_val * 3) + (groups[2][0][0].point_val * 2) + high_card_val
             end
         end
     end
@@ -99,7 +99,7 @@ class Hand
         groups = get_groupings(sorted)
 
         high_card_val = sorted[-1].point_val
-        #debugger
+        
         if groups[1].length == 5
             no_pairs(sorted.map(&:point_val), high_card_val)
         else
@@ -136,7 +136,7 @@ class Hand
         ret = {1 => [], 2 => [], 3 => [], 4 => []}
         cur_group = []
         cards.each do |c|
-            if cur_group.length == 0 || cur_group.first == c
+            if cur_group.length == 0 || cur_group.first.value == c.value
                 cur_group << c
             else
                 ret[cur_group.length] << cur_group
