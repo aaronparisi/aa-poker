@@ -26,7 +26,7 @@ class Card
         when "King"
             return 13
         when "Ace"
-            return 1
+            return 14
         else
             return value.to_i
         end

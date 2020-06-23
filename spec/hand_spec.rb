@@ -11,7 +11,16 @@ describe Hand do
     let(:aCard) {double("card")}
 
     let(:aDeck) {Deck.new}
-    let(:rf) {Hand.new}
+    let(:royal_flush) {Hand.new}
+    let(:straight_flush) {Hand.new}
+    let(:four_of_a_kind) {Hand.new}
+    let(:full_house) {Hand.new}
+    let(:flush) {Hand.new}
+    let(:straight) {Hand.new}
+    let(:three_of_a_kind) {Hand.new}
+    let(:two_pair) {Hand.new}
+    let(:pair) {Hand.new}
+    let(:nothing_burger) {Hand.new}
 
     let(:ace_spades) {aDeck["Ace Spades"]}
     let(:king_spades) {aDeck["King Spades"]}
@@ -77,16 +86,14 @@ describe Hand do
         end
     end
 
-    describe '#royal_flush' do
-        it "returns true if the hand is a royal flush" do
-            rf.add(ace_spades)
-            rf.add(king_spades)
-            rf.add(queen_spades)
-            rf.add(jack_spades)
-            rf.add(ten_spades)
-            expect(rf.royal_flush?).to be true
-        end
-        it "returns false otherwise" do
+    describe '#disect' do
+        it "returns the property point value of the hand" do
+            royal_flush.add(aDeck["Ace Spades"])
+            royal_flush.add(aDeck["King Spades"])
+            royal_flush.add(aDeck["Queen Spades"])
+            royal_flush.add(aDeck["Jack Spades"])
+            royal_flush.add(aDeck["10 Spades"])
+            expect(royal_flush.disect).to eq(429)
         end
     end
 end

@@ -1,3 +1,4 @@
+require 'byebug'
 require 'card'
 
 class Hand
@@ -34,60 +35,61 @@ class Hand
         ret
     end
 
-    # royal flush       234 + 1
-    # straight flush    221 + high_card
-    # four of a kind    208 + quad_val
-    # full house        195 + trip_val
-    # flush             182 + high_card
-    # straight          169 + high_card
-    # three of a kind   130 + (trip_val * 2) + high_card
-    # two pair          52 + (high_pair * 3) + (low_pair * 2) + high_card
-    # pair              13 + (pair_value * 2) + high_card
-    # high card         high_card
+    # royal flush       428 + 1
+    # straight flush    414 + high_card
+    # four of a kind    400 + quad_val
+    # full house        386 + trip_val
+    # flush             372 + high_card
+    # straight          358 + high_card
+    # three of a kind   316 + (trip_val * 2) + high_card
+    # two pair          232 + (high_pair * 3) + (low_pair * 2) + high_card
+    # pair              190 + (pair_value * 2) + high_card
+    # high card         190 => base_val_max
 
-    def no_pairs(high_card_val)
+    def no_pairs(points, high_card_val)
         # there are no pairs at all
         is_flush = flush?
         if straight?
             if is_flush
-                # straight flush or royal flush
-                if high_card_val == 1
-                    return 235
+                if high_card_val == 14
+                    # royal flush
+                    return 429
                 else
-                    return 221 + high_card_val
+                    # straight flush
+                    return 414 + high_card_val
                 end
             else
                 # regular straight
-                return 169 + high_card_val
+                return 358 + high_card_val
             end
         elsif is_flush
             # flush, not straight
-            return 182 + high_card_val
+            return 372 + high_card_val
         else
             # nothing burger
-            return high_card_val
+            return nothing_burger(points)
         end
     end
 
     def yes_pairs(groups, high_card_val)
         if ! groups[4].empty?
             # four of a kind
-            return 208 + quads.first
+            return 400 + quads.first
         elsif ! groups[3].empty?
-            if ! pairs.empty?
+            if ! groups[2].empty?
                 # we have a trip and a pair => full house
-                return 195 + trips.first
+                return 386 + groups[3].first
             else
                 # we have 3 of a kind, no pairs
-                return 130 + (trips.first * 2) + high_card_val
+                return 316 + (groups[3].first * 2) + high_card_val
             end
         else
             if groups[2].length == 1
                 # one pair
-                return 13 + pairs.first + high_card_val
+                return 190 + groups[2].first + high_card_val
             else
                 # 2 pairs
-                return 52 + (pairs.last * 3) + (pairs.first * 2) + high_card_val
+                return 232 + (groups[2].last * 3) + (groups[2].first * 2) + high_card_val
             end
         end
     end
@@ -97,9 +99,9 @@ class Hand
         groups = get_groupings(sorted)
 
         high_card_val = sorted[-1].point_val
-
+        #debugger
         if groups[1].length == 5
-            no_pairs(high_card_val)
+            no_pairs(sorted.map(&:point_val), high_card_val)
         else
             # we have some pairage
             yes_pairs(groups, high_card_val)
@@ -116,7 +118,7 @@ class Hand
 
     def straight?
         # 5 cards in sequence, not same suit
-        sequence?(cards.sort_by {|c| c.point_val})
+        sequence?(cards.map(&:point_val).sort)
     end
 
     private
@@ -127,7 +129,7 @@ class Hand
 
     def sequence?(points)
         return true if points.length == 1
-        ((points[0] + 1) % 13) == points[1] && sequence(points[1..-1])
+        (points[0] + 1) == points[1] && sequence?(points[1..-1])
     end
 
     def get_groupings(cards)
@@ -138,10 +140,19 @@ class Hand
                 cur_group << c
             else
                 ret[cur_group.length] << cur_group
-                cur_group = []
+                cur_group = [c]
             end
         end
+
+        ret[cur_group.length] << cur_group
     
+        ret
+    end
+
+    def nothing_burger(points)
+        ret = 0
+        points.each_with_index {|p, i| ret += (p*(i+1))}
+
         ret
     end
 
