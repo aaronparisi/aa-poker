@@ -8,8 +8,7 @@ class Deck
         @cards = []
         fill_deck
     end
-
-    # Definitely test, maybe thow in corner cases ... what if pos > cards.length?
+    
     def [](card_str)
         cards.each {|c| return c if c.by_string(card_str)}
     end
@@ -33,7 +32,7 @@ class Deck
 
     # Yep, expect(deck.shuffle.cards).to.not eq(deck.cards)
     def shuffle
-        
+        @cards.shuffle
     end
 
     # Yep. Also you can just do @cards.shift(n) I think.

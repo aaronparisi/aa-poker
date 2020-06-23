@@ -1,4 +1,26 @@
-require 'card'
+require_relative 'hand'
+
+class InvalidDiscardError < ArgumentError
+
+    attr_reader :code
+
+    def initialize(code)
+        @code = code
+    end
+
+    def message
+        case code
+        when :delim
+            "Please separate values with a single space"
+        when :type
+            "Please enter integers only"
+        when :quant
+            "Please enter 5 or fewer indices"
+        when :range
+            "Please select indeces between 0 and 4"
+        end
+    end
+end
 
 class Player
 
@@ -26,6 +48,18 @@ class Player
         game.dealer.discard(cards)
     end
 
+    def get_discards
+        begin
+            puts "enter the indices of the cards you would like to discard"
+            str = gets.chomp
+            parse_discards(str)
+            #discard(parse_discards(str))
+        rescue InvalidDiscardError => exception
+            puts exception.message
+            retry
+        end
+    end
+
     def take_action
         
     end
@@ -49,5 +83,20 @@ class Player
         self.see
     end
 
+    def parse_discards(str)
+        idxs = str.split(" ")
+        if idxs.any? {|c| c.length > 1}
+            Kernel::raise InvalidDiscardError.new(:delim)
+        elsif ! idxs.all? {|c| "0123456789".include?(c)}
+            Kernel::raise InvalidDiscardError.new(:type)
+        elsif idxs.length > 5
+            Kernel::raise InvalidDiscardError.new(:quant)
+        elsif idxs.map(&:to_i).any? {|c| c > 4}
+            Kernel::raise InvalidDiscardError.new(:range)
+        end
+    end
 
 end
+
+me = Player.new("Aaron", 1_000, "aGame")
+me.get_discards
