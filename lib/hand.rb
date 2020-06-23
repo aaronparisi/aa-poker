@@ -35,6 +35,11 @@ class Hand
         ret
     end
 
+    def render
+        puts "0   1   2   3   4"
+        puts "#{cards[0]} | #{cards[1]} | #{cards[2]} | #{cards[3]} | #{cards[4]}"
+    end
+
     # royal flush       428 + 1
     # straight flush    414 + high_card
     # four of a kind    400 + quad_val
@@ -94,7 +99,7 @@ class Hand
         end
     end
 
-    def disect
+    def hand_value
         sorted = cards.sort_by {|c| c.point_val}
         groups = get_groupings(sorted)
 

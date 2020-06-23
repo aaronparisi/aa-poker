@@ -22,6 +22,26 @@ class InvalidDiscardError < ArgumentError
     end
 end
 
+class InvalidActionError < ArgumentError
+
+    attr_reader :code
+
+    def initialize(code)
+        @code = code
+    end
+
+    def message
+        case code
+        when :action
+            "Please enter a valid action"
+        when :poverty
+            "You don't have enough money to see that bet"
+        when :ambitious
+            "You dont' have enough money to raise that much"
+        end
+    end
+end
+
 class Player
 
     attr_reader :hand, :name, :pot, :funds, :game
@@ -31,6 +51,12 @@ class Player
         @pot = 0
         @hand = Hand.new
         @round_bet = 0
+        @in_round = true
+    end
+
+    def deal_in(cards)
+        @in_round = true
+        receive(cards)
     end
 
     def receive(cards)
@@ -45,22 +71,45 @@ class Player
         cards.each do |c|
             @hand.remove(c)
         end
-        game.dealer.discard(cards)
+        cards
     end
 
     def get_discards
         begin
             puts "enter the indices of the cards you would like to discard"
             str = gets.chomp
-            discard(parse_discards(str))
+            discard(parse_discards(str)) if str.length > 0
         rescue InvalidDiscardError => exception
             puts exception.message
             retry
         end
     end
 
+    def process_action(str)
+        Kernel::raise InvalidActionError.new(:action) if ! ["fold", "see", "raise"].include?(str)
+        case str
+        when "fold"
+            fold
+        when "see"
+            if funds < game.bet - pot # helper method
+                Kernel::raise InvalidActionError.new(:poverty)
+            else
+                see
+            end
+        when "raise"
+            raise(get_raise)
+        end
+    end
+
     def take_action
-        
+        begin
+            puts "Please enter the action you would like to take"
+            puts "fold | see | raise"
+            process_action(gets.chomp)
+        rescue InvalidActionError => exception
+            puts exception.message
+            retry
+        end
     end
 
     # private??
@@ -68,6 +117,7 @@ class Player
     def fold
         @game.dealer.discard(@hand.empty)
         @round_bet = 0
+        @in_round = false
     end
 
     def see
@@ -77,9 +127,36 @@ class Player
         game.see
     end
 
+    def get_raise
+        begin
+            puts "What would you like to raise?"
+            amt = gets.chomp.to_i
+            Kernel::raise InvalidActionError.new(:ambitious) if game.bet + amt > funds
+        rescue InvalidActionError => exception
+            puts exception.message
+            retry
+        end
+
+        amt
+    end
+
     def raise(amt)
         game.raise(amt)
         self.see
+    end
+
+    def get_paid(winnings)
+        
+    end
+
+    def end_hand
+        @pot = 0
+        @round_bet = 0
+        @game.dealer.discard(@hand.empty)
+        if funds == 0
+            game.kill(self)
+            @in_round = false
+        end
     end
 
     def parse_discards(str)
@@ -99,5 +176,5 @@ class Player
 
 end
 
-me = Player.new("Aaron", 1_000, "aGame")
-me.get_discards
+# me = Player.new("Aaron", 1_000, "aGame")
+# me.get_discards

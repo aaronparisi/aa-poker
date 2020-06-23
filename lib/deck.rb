@@ -23,6 +23,10 @@ class Deck
         cards.length
     end
 
+    def add(c)
+        @cards << c
+    end
+
     # Two tests, one for true, one for false
     # (As an aside, a more production-grade application might check the validity
     # of `val` and `suit`, i.e. 15 of spears ain't valid)

@@ -86,7 +86,7 @@ describe Hand do
         end
     end
 
-    describe '#disect' do
+    describe '#hand_value' do
         it "returns the property point value of the hand" do
             royal_flush.add(aDeck["Ace Spades"])
             royal_flush.add(aDeck["King Spades"])

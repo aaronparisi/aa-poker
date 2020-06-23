@@ -2,12 +2,13 @@ require 'dealer'
 
 class Game
 
-    attr_reader :players, :dealer
+    attr_reader :active_players, :dealer
 
     attr_accessor :pot, :bet
 
-    def initialize()
-        @players = []
+    def initialize(players)
+        @active_players = players
+        @dead_players = []
         @dealer = Dealer.new(self)
         @pot = 0
         @bet = 0
@@ -19,6 +20,20 @@ class Game
 
     def see
         @pot += bet
+    end
+
+    def in_round
+        active_players.filter {|p| p.in_round}
+    end
+
+    def kill(player)
+        @dead_players << player
+        @active_players.delete(player)
+    end
+
+    def end_hand
+        @pot = 0
+        @bet = 0
     end
 
     # This method likely delegates to other objects to determine if game is over
