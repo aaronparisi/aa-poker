@@ -52,8 +52,7 @@ class Player
         begin
             puts "enter the indices of the cards you would like to discard"
             str = gets.chomp
-            parse_discards(str)
-            #discard(parse_discards(str))
+            discard(parse_discards(str))
         rescue InvalidDiscardError => exception
             puts exception.message
             retry
@@ -94,6 +93,8 @@ class Player
         elsif idxs.map(&:to_i).any? {|c| c > 4}
             Kernel::raise InvalidDiscardError.new(:range)
         end
+
+        idxs
     end
 
 end
