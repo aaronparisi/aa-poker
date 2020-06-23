@@ -1,4 +1,4 @@
-require 'card'
+require_relative 'card'
 
 class Deck
 
@@ -36,7 +36,7 @@ class Deck
 
     # Yep, expect(deck.shuffle.cards).to.not eq(deck.cards)
     def shuffle
-        @cards.shuffle
+        @cards.shuffle!
     end
 
     # Yep. Also you can just do @cards.shift(n) I think.

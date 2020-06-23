@@ -44,14 +44,18 @@ end
 
 class Player
 
-    attr_reader :hand, :name, :pot, :funds, :game
+    attr_reader :name, :pot, :funds, :game, :in_round
 
-    def initialize(name, funds, game)
-        @name, @funds, @game = name, funds, game
+    def initialize(name, funds)
+        @name, @funds = name, funds
+        @game = nil
         @pot = 0
         @hand = Hand.new
-        @round_bet = 0
         @in_round = true
+    end
+
+    def join_game(game)
+        @game = game
     end
 
     def deal_in(cards)
@@ -64,7 +68,16 @@ class Player
     end
 
     def show_hand
-        hand.cards
+        @hand.dup
+    end
+
+    def show_stats
+        puts "#{name}:-------------------"
+        puts "#{"Remaining Funds".center(20)}|#{"Your Pot".center(10)}|#{"Current Bet".center(15)}|#{"Total Pot".center(15)}"
+        puts "#{funds}".center(20) + "|" + "#{pot}".center(10) + "|" + "#{game.bet}".center(15) + "|" + "#{game.pot}".center(15)
+        puts
+        puts "Your hand: ---------------------"
+        @hand.render
     end
 
     def discard(cards)
@@ -76,9 +89,13 @@ class Player
 
     def get_discards
         begin
-            puts "enter the indices of the cards you would like to discard"
+            puts "#{name}, please enter the indices of the cards you would like to discard"
             str = gets.chomp
-            discard(parse_discards(str)) if str.length > 0
+            if str.length > 0
+                discard(parse_discards(str))
+            else
+                return []
+            end
         rescue InvalidDiscardError => exception
             puts exception.message
             retry
@@ -103,7 +120,7 @@ class Player
 
     def take_action
         begin
-            puts "Please enter the action you would like to take"
+            puts "#{name}, please enter the action you would like to take"
             puts "fold | see | raise"
             process_action(gets.chomp)
         rescue InvalidActionError => exception
@@ -116,7 +133,7 @@ class Player
 
     def fold
         @game.dealer.discard(@hand.empty)
-        @round_bet = 0
+        @pot
         @in_round = false
     end
 
@@ -146,12 +163,12 @@ class Player
     end
 
     def get_paid(winnings)
-        
+        @funds += winnings
+        puts "#{name} wins #{winnings}!  Total funds are now #{funds}"
     end
 
     def end_hand
         @pot = 0
-        @round_bet = 0
         @game.dealer.discard(@hand.empty)
         if funds == 0
             game.kill(self)
@@ -171,7 +188,7 @@ class Player
             Kernel::raise InvalidDiscardError.new(:range)
         end
 
-        idxs
+        idxs.map {|i| @hand[i.to_i]}
     end
 
 end

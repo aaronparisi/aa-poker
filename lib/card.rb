@@ -1,5 +1,69 @@
 class Card
 
+    SPADES = [
+        "🂢",
+        "🂣",
+        "🂤",
+        "🂥",
+        "🂦",
+        "🂧",
+        "🂨",
+        "🂩",
+        "🂪",
+        "🂫",
+        "🂭",
+        "🂬",
+        "🂡"
+    ]
+
+    CLUBS = [
+        "🃒",
+        "🃓",
+        "🃔",
+        "🃕",
+        "🃖",
+        "🃗",
+        "🃘",
+        "🃙",
+        "🃚",
+        "🃛",
+        "🃝",
+        "🃜",
+        "🃑"
+    ]
+
+    DIAMONDS = [
+        "🃂",
+        "🃃",
+        "🃄",
+        "🃅",
+        "🃆",
+        "🃇",
+        "🃈",
+        "🃉",
+        "🃊",
+        "🃋",
+        "🃍",
+        "🃌",
+        "🃁"
+    ]
+
+    HEARTS = [
+        "🂲",
+        "🂳",
+        "🂴",
+        "🂵",
+        "🂶",
+        "🂷",
+        "🂸",
+        "🂹",
+        "🂺",
+        "🂻",
+        "🂽",
+        "🂼",
+        "🂱"
+    ]
+
     attr_reader :value, :suit
 
     # Simple test for attribute values
@@ -15,6 +79,20 @@ class Card
     def by_string(str)
         v, s = str.split(" ")
         @value == v && @suit == s
+    end
+
+    def to_symb
+        idx = self.point_val-2
+        case suit
+        when "Spades"
+            Card::SPADES[idx]
+        when "Clubs"
+            Card::CLUBS[idx]
+        when "Diamonds"
+            Card::DIAMONDS[idx]
+        when "Hearts"
+            Card::HEARTS[idx]
+        end
     end
 
     def point_val

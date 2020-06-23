@@ -15,6 +15,10 @@ class Hand
         cards.include?(c)
     end
 
+    def [](pos)
+        cards[pos]
+    end
+
     # Easy
     def add(c)
         @cards << c
@@ -37,7 +41,7 @@ class Hand
 
     def render
         puts "0   1   2   3   4"
-        puts "#{cards[0]} | #{cards[1]} | #{cards[2]} | #{cards[3]} | #{cards[4]}"
+        puts cards.map {|c| c.to_symb}.join(" | ")
     end
 
     # royal flush       428 + 1

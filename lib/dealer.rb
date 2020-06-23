@@ -1,8 +1,8 @@
-require 'deck'
+require_relative 'deck'
 
 class Dealer
 
-    attr_reader :discards, :deck
+    attr_reader :discards, :deck, :game
     # No test here since i-vars are not exposed via attr_*'s
     def initialize(game)
         @game = game
@@ -30,8 +30,6 @@ class Dealer
         take_bets
 
         award_winner
-
-        end_hand
     end
 
     # Two tests:
@@ -39,15 +37,24 @@ class Dealer
     # 2 - expect(player).to receive(:recieve_cards) with cards
     # ( Test those methods individual in their respective classes )
     def deal
-        game.active_players.each {|p| p.deal_in(@deck.shift(5))}
+        game.active_players.each {|p| p.deal_in(@deck.deal(5))}
     end
 
     def take_bets
-        game.in_round.each {|p| p.take_action}
+        game.reset_bet
+        game.in_round.each do |p|
+            p.show_stats
+            p.take_action
+        end
     end
 
     def take_discards
-        game.in_round.each {|p| discard(p.get_discards)}
+        game.in_round.each do |p|
+            p.show_stats
+            trash = p.get_discards
+            discard(trash)
+            p.receive(@deck.deal(trash.length))
+        end
     end
 
     def discard(cards)
@@ -55,9 +62,9 @@ class Dealer
     end
 
     def award_winner
-        winner = game.in_round.sort_by(&:hand.hand_value).last
+        winner = game.in_round.sort_by {|p| p.show_hand.hand_value}.last
         winner.get_paid(game.pot)
-        active_players.each {|p| p.end_hand}
+        game.active_players.each {|p| p.end_hand}
         game.end_hand
     end
 end

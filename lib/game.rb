@@ -1,6 +1,9 @@
-require 'dealer'
+require_relative 'dealer'
+require_relative 'player'
 
 class Game
+
+    BUYIN = 1_000
 
     attr_reader :active_players, :dealer
 
@@ -14,12 +17,17 @@ class Game
         @bet = 0
     end
 
+    def reset_bet
+        @bet = 0
+    end
+
     def raise(amt)
         @bet += amt
     end
 
     def see
         @pot += bet
+        puts "the game pot is now #{pot}"
     end
 
     def in_round
@@ -40,13 +48,30 @@ class Game
     # I would stub out helper methods and test all possibilities. We can talk more
     # about this when you implement this
     def game_over?
-        
+        active_players.length == 1
+    end
+
+    def seat_players
+        active_players.each {|p| p.join_game(self)}
     end
 
     # IMHO this is more of an integration test than a unit test. This is the whole
     # meat of the program, the proverbial `main` method. I would potentially pull
     # this out into its own spec file and maybe just walk through a whole game. Maybe...
     def play_game
-        
+
+        seat_players
+
+        puts "Welcome to Poker!  Playing today are:"
+        puts active_players.map {|p| p.name}.join(", ")
+
+        dealer.play_round until game_over?
+
+        puts "#{active_players.first.name} wins!"
     end
 end
+
+p1 = Player.new("Aaron", Game::BUYIN)
+p2 = Player.new("Kelsey", Game::BUYIN)
+g = Game.new([p1, p2])
+g.play_game
