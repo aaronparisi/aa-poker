@@ -144,25 +144,25 @@ class Player
         end
     end
 
-    def action_string
+    def action_string(n)
         actions = []
         if game.bet == 0
             actions << "check"
-            actions << "bet"
+            actions << "bet" if funds > 0
         else
             actions << "see"
-            actions << "raise"
+            actions << "raise" if n == 1
         end
         actions << "fold"
 
         actions.join(" | ")
     end
 
-    def take_action
+    def take_action(round_num)
         begin
             puts "#{name}, please enter the action you would like to take"
-            actions = action_string
-            puts action_string
+            actions = action_string(round_num)
+            puts actions
             act = gets.chomp
             Kernel::raise InvalidActionError.new(:action) if ! actions.include?(act)
             process_action(act)

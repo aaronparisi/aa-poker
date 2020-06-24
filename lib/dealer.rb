@@ -58,7 +58,13 @@ class Dealer
         left = []
         players.each do |p|
             p.show_stats
-            p.take_action
+            p.take_action(1)
+            left = game.in_round
+            return left if left.length == 1
+        end
+        players.filter {|p| (game.ante + game.bet) > p.pot}.each do |p|
+            p.show_stats
+            p.take_action(2)
             left = game.in_round
             return left if left.length == 1
         end
