@@ -1,4 +1,5 @@
 require_relative 'deck'
+require 'byebug'
 
 class Dealer
 
@@ -17,17 +18,30 @@ class Dealer
         @deck.shuffle
     end
 
+    def ante_up(players)
+        players.each {|p| p.ante_up}
+    end
+
     def play_round
 
         reset_deck
 
-        deal
+        in_round = game.in_round
 
-        take_bets
+        deal(in_round)
 
-        take_discards
+        ante_up(in_round)
 
-        take_bets
+        remaining = take_bets(in_round)
+
+        if remaining.length > 1
+
+            take_discards(remaining)
+
+            game.reset_bet
+
+            take_bets(remaining)
+        end
 
         award_winner
     end
@@ -36,20 +50,23 @@ class Dealer
     # 1 - expect(deck).to receive(:deal_n) with n
     # 2 - expect(player).to receive(:recieve_cards) with cards
     # ( Test those methods individual in their respective classes )
-    def deal
-        game.active_players.each {|p| p.deal_in(@deck.deal(5))}
+    def deal(players)
+        players.each {|p| p.deal_in(@deck.deal(5))}
     end
 
-    def take_bets
-        game.reset_bet
-        game.in_round.each do |p|
+    def take_bets(players)
+        left = []
+        players.each do |p|
             p.show_stats
             p.take_action
+            left = game.in_round
+            return left if left.length == 1
         end
+        left
     end
 
-    def take_discards
-        game.in_round.each do |p|
+    def take_discards(players)
+        players.each do |p|
             p.show_stats
             trash = p.get_discards
             discard(trash)

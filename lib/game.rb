@@ -5,7 +5,7 @@ class Game
 
     BUYIN = 1_000
 
-    attr_reader :active_players, :dealer
+    attr_reader :active_players, :dealer, :ante
 
     attr_accessor :pot, :bet
 
@@ -15,6 +15,7 @@ class Game
         @dealer = Dealer.new(self)
         @pot = 0
         @bet = 0
+        @ante = 100
     end
 
     def reset_bet
@@ -25,9 +26,8 @@ class Game
         @bet += amt
     end
 
-    def see
-        @pot += bet
-        puts "the game pot is now #{pot}"
+    def see(amt)
+        @pot += amt
     end
 
     def in_round
@@ -42,6 +42,7 @@ class Game
     def end_hand
         @pot = 0
         @bet = 0
+        @ante += 50
     end
 
     # This method likely delegates to other objects to determine if game is over
