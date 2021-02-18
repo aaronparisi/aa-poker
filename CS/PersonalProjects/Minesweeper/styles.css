@@ -1,0 +1,63 @@
+@import './stylesheets/reset.css';
+@import './stylesheets/game.css';
+@import './stylesheets/board.css';
+@import './stylesheets/tile.css';
+
+html, body {
+  background-color: rgb(71, 71, 71);
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game {
+  z-index: 1;
+}
+
+.modal {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-contents {
+  font-size: 36px;
+  background-color: powderblue;
+  border: 5px solid black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.modal-button {
+  margin-top: 10px;
+  font-size: 36px;
+  background-color: cornflowerblue;
+}
+
+.modal-button:hover {
+  background-color: rgb(86, 127, 204);
+  cursor: pointer;
+}
