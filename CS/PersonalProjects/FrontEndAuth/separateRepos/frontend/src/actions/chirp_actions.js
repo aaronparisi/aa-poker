@@ -15,7 +15,10 @@ const receiveSingleChirp = chirp => ({
 });
 
 export const fetchChirps = () => dispatch => getChirps()
-  .then(chirps => dispatch(receiveChirps(chirps)));
+  .then(chirps => {
+    debugger
+    dispatch(receiveChirps(chirps.data))
+  })
 
 export const likeChirp = id => dispatch => postLikeToChirp(id)
   .then(chirp => dispatch(receiveSingleChirp(chirp)));

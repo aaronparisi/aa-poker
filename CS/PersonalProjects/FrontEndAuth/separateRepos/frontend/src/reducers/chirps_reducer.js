@@ -5,6 +5,7 @@ export default (state = {}, action) => {
   const chirps = {};
   switch (action.type) {
     case RECEIVE_CHIRPS:
+      debugger
       action.chirps.forEach((chirp) => {
         chirps[chirp.id] = chirp;
       });
