@@ -23,7 +23,9 @@ const fetchCurrentUser = () => {
   getCurrentUser()
   .then(
     currentUser => {
-      store.dispatch(receiveCurrentUser(currentUser.data))
+      if (currentUser.data !== '') {
+        store.dispatch(receiveCurrentUser(currentUser.data))
+      }
     },
     err => {
       console.log('error fetching current user')
