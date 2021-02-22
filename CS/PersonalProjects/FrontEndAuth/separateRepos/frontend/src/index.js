@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === "production") {
   axios.defaults.baseURL = 'http://localhost:3000'
 } else {
   axios.defaults.baseURL = 'http://localhost:3000'
+  axios.defaults.withCredentials = true
 }
 
 const store = createStore()

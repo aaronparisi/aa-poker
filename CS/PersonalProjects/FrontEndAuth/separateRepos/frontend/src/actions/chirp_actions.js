@@ -16,7 +16,6 @@ const receiveSingleChirp = chirp => ({
 
 export const fetchChirps = () => dispatch => getChirps()
   .then(chirps => {
-    debugger
     dispatch(receiveChirps(chirps.data))
   })
 
