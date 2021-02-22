@@ -1,4 +1,5 @@
 import { getChirps, postLikeToChirp, deleteLikeFromChirp } from '../utils/chirp_util';
+import { receiveCurrentUser } from './session_actions'
 
 export const RECEIVE_CHIRPS = 'RECEIVE_CHIRPS';
 export const RECEIVE_SINGLE_CHIRP = 'RECEIVE_SINGLE_CHIRP';
@@ -16,7 +17,8 @@ const receiveSingleChirp = chirp => ({
 
 export const fetchChirps = () => dispatch => getChirps()
   .then(chirps => {
-    dispatch(receiveChirps(chirps.data))
+    dispatch(receiveChirps(chirps.data.chirps))
+    dispatch(receiveCurrentUser(chirps.data.current_user))
   })
 
 export const likeChirp = id => dispatch => postLikeToChirp(id)

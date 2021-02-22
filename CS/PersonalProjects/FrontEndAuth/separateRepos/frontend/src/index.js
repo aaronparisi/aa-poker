@@ -9,7 +9,7 @@ import { HashRouter } from 'react-router-dom';
 const axios = require('axios').default
 if (process.env.NODE_ENV === "production") {
   // ! change this when you deploy
-  axios.defaults.baseURL = 'http://localhost:3000'
+  axios.defaults.baseURL = 'http://some-heroku-url.com'
 } else {
   axios.defaults.baseURL = 'http://localhost:3000'
   axios.defaults.withCredentials = true

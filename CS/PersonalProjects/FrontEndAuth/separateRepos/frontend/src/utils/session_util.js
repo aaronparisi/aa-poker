@@ -1,5 +1,12 @@
 import axios from "axios"
 
+export const getCurrentUser = () => {
+  return axios({
+    method: 'get',
+    url: '/api/users/current-user'
+  })
+}
+
 // create a new user
 export const postUser = user => {
   return axios({
