@@ -7,6 +7,7 @@ class ChirpIndex extends React.Component {
   }
 
   componentDidMount() {
+    console.log('fecthing chirps')
     this.props.fetchChirps();
   }
 

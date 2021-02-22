@@ -10,7 +10,7 @@ export default ({ currentUser, logout }) => {
   ) : (
     <div>
       <p>Hello, {currentUser.username}</p>
-      <Link className="btn" to="/login" onClick={logout}>Log Out</Link>
+      <button className="btn" onClick={logout}>Log Out</button>
     </div>
   )
 

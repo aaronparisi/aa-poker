@@ -48,10 +48,24 @@ export const logout = () => dispatch => {
   return sessionApiUtil.deleteSession()
   .then(
     logoutMsg => {  // does the msg from sessions controller even get returned?
-      dispatch(logoutCurrentUser())
+      dispatch(logoutCurrentUser()) 
     },
     err => {
       console.log(err)
+    }
+  )
+}
+
+export const fetchCurrentUser = () => dispatch => {
+  sessionApiUtil.getCurrentUser()
+  .then(
+    currentUser => {
+      if (currentUser.data !== '') {
+        dispatch(receiveCurrentUser(currentUser.data))
+      }
+    },
+    err => {
+      console.log('error fetching current user')
     }
   )
 }
