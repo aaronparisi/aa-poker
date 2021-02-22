@@ -18,7 +18,6 @@ const receiveSingleChirp = chirp => ({
 export const fetchChirps = () => dispatch => getChirps()
   .then(chirps => {
     dispatch(receiveChirps(chirps.data.chirps))
-    dispatch(receiveCurrentUser(chirps.data.current_user))
   })
 
 export const likeChirp = id => dispatch => postLikeToChirp(id)

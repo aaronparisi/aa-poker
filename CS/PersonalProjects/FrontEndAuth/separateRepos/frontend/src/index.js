@@ -5,6 +5,8 @@ import App from './components/App';
 import createStore from './store/store';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
+import { receiveCurrentUser } from './actions/session_actions';
+import { getCurrentUser } from './utils/session_util'
 
 const axios = require('axios').default
 if (process.env.NODE_ENV === "production") {
@@ -16,6 +18,22 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const store = createStore()
+
+const fetchCurrentUser = () => {
+  getCurrentUser()
+  .then(
+    currentUser => {
+      store.dispatch(receiveCurrentUser(currentUser.data))
+    },
+    err => {
+      console.log('error fetching current user')
+    }
+  )
+}
+
+window.addEventListener('DOMContentLoaded', e => {
+  fetchCurrentUser();
+})
 
 ReactDOM.render(
   <React.StrictMode>

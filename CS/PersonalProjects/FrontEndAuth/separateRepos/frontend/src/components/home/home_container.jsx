@@ -7,8 +7,10 @@ import { fetchCurrentUser } from '../../actions/session_actions'
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCurrentUser: () => dispatch(fetchCurrentUser()),
+    // fetchCurrentUser: () => dispatch(fetchCurrentUser()),
   }
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(null, null)(Home)
+
+// * this container isn't necessary right now...

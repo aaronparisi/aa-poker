@@ -18,18 +18,6 @@ const logoutCurrentUser = () => {
 
 // thunk stuff - will be exported to containers
 
-export const fetchCurrentUser = () => dispatch => {
-  return sessionApiUtil.getCurrentUser()
-  .then(
-    currentUser => {
-      dispatch(receiveCurrentUser(currentUser.data))
-    },
-    err => {
-      console.log('error fetching current user')
-    }
-  )
-}
-
 export const createNewUser = formUser => dispatch => {
   return sessionApiUtil.postUser(formUser)
   .then(

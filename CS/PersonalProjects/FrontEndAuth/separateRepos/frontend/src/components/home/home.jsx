@@ -6,10 +6,6 @@ class Home extends React.Component {
     super(props)
   }
 
-  componentDidMount() {
-    this.props.fetchCurrentUser()
-  }
-
   render() {
     return (
       <div className="home">
