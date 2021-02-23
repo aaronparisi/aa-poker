@@ -5,6 +5,7 @@ import AppContainer from './components/app/app_container';
 import createStore from './store/store';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
+import { fetchCurrentUser } from './actions/session_actions'
 
 const axios = require('axios').default
 if (process.env.NODE_ENV === "production") {
@@ -17,13 +18,21 @@ if (process.env.NODE_ENV === "production") {
 
 const store = createStore()
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <HashRouter>
-        <AppContainer />
-      </HashRouter>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+fetchCurrentUser()(store.dispatch)
+.then(
+  msg => {
+    ReactDOM.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <HashRouter>
+            <AppContainer />
+          </HashRouter>
+        </Provider>
+      </React.StrictMode>,
+      document.getElementById('root')
+    )
+  },
+  err => {
+    console.log('error fetching current user')
+  }
+)

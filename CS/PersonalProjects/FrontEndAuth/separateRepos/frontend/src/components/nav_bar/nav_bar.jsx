@@ -1,25 +1,49 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-export default ({ currentUser, logout }) => {
-  const display = (currentUser == null) ? (
-    <div>
-      <Link className="btn" to="/signup">Sign Up</Link>
-      <Link className="btn" to="/login">Log In</Link>
-    </div>
-  ) : (
-    <div>
-      <p>Hello, {currentUser.username}</p>
-      <button className="btn" onClick={logout}>Log Out</button>
-    </div>
-  )
+class NavBar extends React.Component {
+  constructor({ currentUser, logout }) {
+    super({ currentUser, logout })  // ? why am i getting a warning here?
 
-  return (
-    <header className="nav-bar">
-      <h1 className="logo">BLUEBIRD</h1>
+    this.handleLogout = this.handleLogout.bind(this)
+  }
+
+  handleLogout() {
+    this.props.logout()
+    .then(
+      () => {
+        debugger
+        this.props.history.push('/login')
+      }
+    )
+  }
+
+  display() {
+    return (this.props.currentUser == null) ? (
       <div>
-        {display}
+        <Link className="btn" to="/signup">Sign Up</Link>
+        <Link className="btn" to="/login">Log In</Link>
       </div>
-    </header>
-  );
+    ) : (
+      <div>
+        <p>Hello, {this.props.currentUser.username}</p>
+        <button className="btn" onClick={this.handleLogout}>Log Out</button>
+      </div>
+    )
+  }
+
+  render() {
+    return (
+      <header className="nav-bar">
+        {/* <h1 className="logo">BLUEBIRD</h1> */}
+        <Link className="btn" to="/">BLUEBIRD</Link>
+        <Link className="btn" to="/chirps">CHIRPS</Link>
+        <div>
+          {this.display()}
+        </div>
+      </header>
+    );
+  }
 };
+
+export default withRouter(NavBar)

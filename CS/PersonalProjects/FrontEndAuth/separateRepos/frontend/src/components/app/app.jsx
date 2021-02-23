@@ -10,26 +10,17 @@ import HomeContainer from '../home/home_container'
 import { Route } from 'react-router-dom'
 import { AuthRoute, ProtectedRoute } from '../../utils/route_util'
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+const App = () => {
 
-  componentDidMount() {
-    this.props.fetchCurrentUser();
-  }
-
-  render() {
-    return (
-      <div>
-        <Route path="/" component={NavBarContainer} />
-        <Route exact path="/" component={HomeContainer} />
-        <ProtectedRoute path="/chirps" component={ChirpIndexContainer} />
-        <AuthRoute exact path="/signup" component={SignupContainer} />
-        <AuthRoute exact path="/login" component={LoginContainer} />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <Route path="/" component={NavBarContainer} />
+      <Route exact path="/" component={HomeContainer} />
+      <ProtectedRoute exact path="/chirps" component={ChirpIndexContainer} />
+      <AuthRoute exact path="/signup" component={SignupContainer} />
+      <AuthRoute exact path="/login" component={LoginContainer} />
+    </div>
+  )
 }
 
 export default App;
