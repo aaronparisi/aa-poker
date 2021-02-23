@@ -1,4 +1,5 @@
 import * as sessionApiUtil from '../utils/session_util'
+import { history } from '../index' // ! where do I save this?
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER'
 export const LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER'
@@ -23,7 +24,8 @@ export const createNewUser = formUser => dispatch => {
   .then(
     newUser => {
       dispatch(receiveCurrentUser(newUser.data))
-      return newUser
+      history.push('/chirps')
+      // return newUser
     },
     err => {
       return Promise.reject(err)
@@ -36,7 +38,8 @@ export const login = formUser => dispatch => {
   .then(
     curUser => {
       dispatch(receiveCurrentUser(curUser.data))
-      return curUser
+      history.push('/chirps')
+      // return curUser
     },
     err => {
       return Promise.reject(err)
@@ -49,6 +52,7 @@ export const logout = () => dispatch => {
   .then(
     logoutMsg => {  // does the msg from sessions controller even get returned?
       dispatch(logoutCurrentUser())
+      history.push('/login')
     },
     err => {
       console.log(err)

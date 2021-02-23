@@ -1,45 +1,31 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { PickerRoute } from '../../utils/route_util'
+import { SignInLinks, SignOutLinks } from './nav_bar_links'
 
 class NavBar extends React.Component {
   constructor({ currentUser, logout }) {
     super({ currentUser, logout })  // ? why am i getting a warning here?
 
-    this.handleLogout = this.handleLogout.bind(this)
+    this.callSignInLinks = this.callSignInLinks.bind(this)
+    this.callSignOutLinks = this.callSignOutLinks.bind(this)
   }
 
-  handleLogout() {
-    this.props.logout()
-    .then(
-      () => {
-        debugger
-        this.props.history.push('/login')
-      }
-    )
+  callSignInLinks() {
+    return <SignInLinks />
   }
 
-  display() {
-    return (this.props.currentUser == null) ? (
-      <div>
-        <Link className="btn" to="/signup">Sign Up</Link>
-        <Link className="btn" to="/login">Log In</Link>
-      </div>
-    ) : (
-      <div>
-        <p>Hello, {this.props.currentUser.username}</p>
-        <button className="btn" onClick={this.handleLogout}>Log Out</button>
-      </div>
-    )
+  callSignOutLinks() {
+    return <SignOutLinks username={this.props.currentUser.username} logout={this.props.logout}/>
   }
 
   render() {
     return (
       <header className="nav-bar">
-        {/* <h1 className="logo">BLUEBIRD</h1> */}
         <Link className="btn" to="/">BLUEBIRD</Link>
         <Link className="btn" to="/chirps">CHIRPS</Link>
         <div>
-          {this.display()}
+          <PickerRoute trueComponent={this.callSignOutLinks} falseComponent={this.callSignInLinks} path="/"/>
         </div>
       </header>
     );

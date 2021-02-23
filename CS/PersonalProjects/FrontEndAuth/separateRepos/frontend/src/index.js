@@ -4,7 +4,9 @@ import './stylesheets/index.css';
 import AppContainer from './components/app/app_container';
 import createStore from './store/store';
 import { Provider } from 'react-redux';
-import { HashRouter } from 'react-router-dom';
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history'
+
 import { fetchCurrentUser } from './actions/session_actions'
 
 const axios = require('axios').default
@@ -17,6 +19,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const store = createStore()
+export const history = createBrowserHistory()
 
 fetchCurrentUser()(store.dispatch)
 .then(
@@ -24,9 +27,9 @@ fetchCurrentUser()(store.dispatch)
     ReactDOM.render(
       <React.StrictMode>
         <Provider store={store}>
-          <HashRouter>
+          <Router history={history}>
             <AppContainer />
-          </HashRouter>
+          </Router>
         </Provider>
       </React.StrictMode>,
       document.getElementById('root')

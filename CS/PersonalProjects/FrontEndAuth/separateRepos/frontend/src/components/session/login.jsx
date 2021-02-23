@@ -23,15 +23,15 @@ class Login extends React.Component {
     e.preventDefault()
 
     this.props.login(this.state)
-    .then(
-      currentUser => {
-        console.log('logged in successfully, about to push "/chirps" to history')
-        this.props.history.push('/chirps')
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    // .then(
+    //   currentUser => {
+    //     console.log('logged in successfully, about to push "/chirps" to history')
+    //     this.props.history.push('/chirps')
+    //   },
+    //   err => {
+    //     console.log(err)
+    //   }
+    // )
   }
 
   render() {

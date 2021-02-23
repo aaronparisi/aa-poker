@@ -31,15 +31,15 @@ class Signup extends React.Component {
     e.preventDefault()
 
     this.props.createNewUser(this.state)
-    .then(
-      createdUser => {
-        console.log('about to push "/chirps" to history')
-        this.props.history.push('/chirps')
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    // .then(
+    //   createdUser => {
+    //     console.log('about to push "/chirps" to history')
+    //     this.props.history.push('/chirps')
+    //   },
+    //   err => {
+    //     console.log(err)
+    //   }
+    // )
   }
 
   render() {
